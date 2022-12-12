@@ -12,43 +12,43 @@ app.use(express.json());
 
 //dataBase
 
-// const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.tjc9clz.mongodb.net/?retryWrites=true&w=majority`;
-// const client = new MongoClient(uri, {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-//   serverApi: ServerApiVersion.v1,
-// });
+const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.tjc9clz.mongodb.net/?retryWrites=true&w=majority`;
+const client = new MongoClient(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  serverApi: ServerApiVersion.v1,
+});
 
-// //jwt verify
-// function verifyJWT(req, res, next){
-// const authHeader = req.headers.authorization 
-// if(!authHeader){
-//   return res.status(401).send({message: 'Unauthorized access'})
-// }
-// const token = authHeader.split(' ')[1]
-// jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, function(error, decoded){
-//   if(error){
-//     return res.status(401).send({message: 'Unauthorized access'})
-//   }
-//   req.decoded = decoded
-//   next()
-// })
-// }
-// async function run() {
-//   try {
-//     const serviceCollection = client
-//       .db("photography")
-//       .collection("photoService");
-//     const reviewCollection = client.db("photography").collection("review");
+//jwt verify
+function verifyJWT(req, res, next){
+const authHeader = req.headers.authorization 
+if(!authHeader){
+  return res.status(401).send({message: 'Unauthorized access'})
+}
+const token = authHeader.split(' ')[1]
+jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, function(error, decoded){
+  if(error){
+    return res.status(401).send({message: 'Unauthorized access'})
+  }
+  req.decoded = decoded
+  next()
+})
+}
+async function run() {
+  try {
+    const serviceCollection = client
+      .db("photography")
+      .collection("photoService");
+    const reviewCollection = client.db("photography").collection("review");
 
-//      //jwt
-//      app.post('/jwt', (req, res)=>{
-//       const user = req.body
-//       const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET,{
-//         expiresIn: '10d'
-//       })
-//       res.send({token})
-//     })
+     //jwt
+     app.post('/jwt', (req, res)=>{
+      const user = req.body
+      const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET,{
+        expiresIn: '10d'
+      })
+      res.send({token})
+    })
 
 
 //     app.get("/service", async (req, res) => {
